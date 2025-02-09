@@ -28,12 +28,22 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{Base_URL}}/users",
+							"raw": "{{Base_URL}}/users?pageNumber=3&pageSize=10",
 							"host": [
 								"{{Base_URL}}"
 							],
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "3"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -44,12 +54,22 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{Base_URL}}/users",
+									"raw": "{{Base_URL}}/users?pageNumber=3&pageSize=10",
 									"host": [
 										"{{Base_URL}}"
 									],
 									"path": [
 										"users"
+									],
+									"query": [
+										{
+											"key": "pageNumber",
+											"value": "3"
+										},
+										{
+											"key": "pageSize",
+											"value": "10"
+										}
 									]
 								}
 							},
@@ -63,15 +83,15 @@
 								},
 								{
 									"key": "Date",
-									"value": "Sun, 09 Feb 2025 20:49:53 GMT"
+									"value": "Sun, 09 Feb 2025 22:32:10 GMT"
 								},
 								{
-									"key": "Content-Length",
-									"value": "599"
+									"key": "Transfer-Encoding",
+									"value": "chunked"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Users listed successfully\",\n    \"pagination\": {\n        \"current_page\": 0,\n        \"total_pages\": 1,\n        \"total_size\": 2\n    },\n    \"data\": [\n        {\n            \"id\": \"963de191-8278-40f0-a367-e2e45e724aad\",\n            \"firstname\": \"John\",\n            \"lastname\": \"Doe\",\n            \"email\": \"john@example.com\",\n            \"street\": \"123 Elm Street\",\n            \"city\": \"New York\",\n            \"state\": \"NY\",\n            \"zipcode\": \"10001\",\n            \"createdAt\": \"2025-02-09T17:15:06.6062919+01:00\"\n        },\n        {\n            \"id\": \"18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1\",\n            \"firstname\": \"Jane\",\n            \"lastname\": \"Smith\",\n            \"email\": \"jane@example.com\",\n            \"street\": \"456 Oak Avenue\",\n            \"city\": \"Los Angeles\",\n            \"state\": \"CA\",\n            \"zipcode\": \"90001\",\n            \"createdAt\": \"2025-02-09T17:15:06.6062919+01:00\"\n        }\n    ]\n}"
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Users listed successfully\",\n    \"pagination\": {\n        \"current_page\": 3,\n        \"total_pages\": 5,\n        \"total_size\": 50\n    },\n    \"data\": [\n        {\n            \"id\": \"3617c07a-b6da-4a92-8b65-fdc06ac9e2b4\",\n            \"firstname\": \"James\",\n            \"lastname\": \"Sunderland\",\n            \"email\": \"James.Sunderland.30@acme.corp\",\n            \"street\": \"11 Katz St.\",\n            \"city\": \"Pennsylvania\",\n            \"state\": \"Centralia\",\n            \"zipcode\": \"M4A2T6\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"ee13afd5-ae1a-4b12-b362-ff05798b4cf9\",\n            \"firstname\": \"Heather\",\n            \"lastname\": \"Mayson\",\n            \"email\": \"Heather.Mayson.31@acme.corp\",\n            \"street\": \"24 Lindsey St.\",\n            \"city\": \"British Columbia\",\n            \"state\": \"Vancouver\",\n            \"zipcode\": \"N9M2R7\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"1ef7603f-e49d-4e66-996f-598baaae80e7\",\n            \"firstname\": \"Henry\",\n            \"lastname\": \"Townshend\",\n            \"email\": \"Henry.Townshend.32@acme.corp\",\n            \"street\": \"10 Rendell St.\",\n            \"city\": \"Ontario\",\n            \"state\": \"Toronto\",\n            \"zipcode\": \"M2K3B8\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"01463fd5-2bd2-4f1a-ac4a-1fff2dd6fbe7\",\n            \"firstname\": \"Walter\",\n            \"lastname\": \"Sullivan\",\n            \"email\": \"Walter.Sullivan.33@acme.corp\",\n            \"street\": \"9 Wiltse Road\",\n            \"city\": \"Alberta\",\n            \"state\": \"Canmore\",\n            \"zipcode\": \"N9W4H9\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"397dea34-bf4a-429a-b976-f633e7040a4d\",\n            \"firstname\": \"John\",\n            \"lastname\": \"Doe\",\n            \"email\": \"John.Doe.34@acme.corp\",\n            \"street\": \"5 Elm St.\",\n            \"city\": \"New York\",\n            \"state\": \"NY\",\n            \"zipcode\": \"10001\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"2715514b-24d0-45b6-a885-49e1c20953c5\",\n            \"firstname\": \"Sarah\",\n            \"lastname\": \"Smith\",\n            \"email\": \"Sarah.Smith.35@acme.corp\",\n            \"street\": \"10 Oak Ave.\",\n            \"city\": \"Los Angeles\",\n            \"state\": \"CA\",\n            \"zipcode\": \"90001\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"13fcd63e-423b-45fc-8116-918c79ec9a38\",\n            \"firstname\": \"Michael\",\n            \"lastname\": \"Johnson\",\n            \"email\": \"Michael.Johnson.36@acme.corp\",\n            \"street\": \"15 Pine Ln.\",\n            \"city\": \"Chicago\",\n            \"state\": \"IL\",\n            \"zipcode\": \"60007\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"780ca142-82e6-4fde-a25b-4e396482adca\",\n            \"firstname\": \"Emily\",\n            \"lastname\": \"Williams\",\n            \"email\": \"Emily.Williams.37@acme.corp\",\n            \"street\": \"20 Maple Dr.\",\n            \"city\": \"Houston\",\n            \"state\": \"TX\",\n            \"zipcode\": \"77001\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"ac65ef0f-27b3-4daf-8f0a-dbdfdc7795dc\",\n            \"firstname\": \"David\",\n            \"lastname\": \"Brown\",\n            \"email\": \"David.Brown.38@acme.corp\",\n            \"street\": \"25 Willow Ct.\",\n            \"city\": \"Phoenix\",\n            \"state\": \"AZ\",\n            \"zipcode\": \"85001\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        },\n        {\n            \"id\": \"db108e98-ca99-4183-85d4-1ea15ee44cc3\",\n            \"firstname\": \"Jessica\",\n            \"lastname\": \"Jones\",\n            \"email\": \"Jessica.Jones.39@acme.corp\",\n            \"street\": \"30 Birch Rd.\",\n            \"city\": \"Philadelphia\",\n            \"state\": \"PA\",\n            \"zipcode\": \"19019\",\n            \"createdAt\": \"2025-02-09T23:28:04.3599836+01:00\"\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -92,7 +112,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "c9fa15fa-4093-4cf7-8ecf-365b6743930a",
+									"value": "3617c07a-b6da-4a92-8b65-fdc06ac9e2b4",
 									"description": "required"
 								}
 							]

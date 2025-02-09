@@ -47,7 +47,7 @@ func (r *userRepository) List(ctx context.Context, pageNumber int, pageSize int)
 	}
 
 	// Get paginated records
-	offset := pageNumber * pageSize
+	offset := (pageNumber - 1) * pageSize
 	if err := r.db.WithContext(ctx).Offset(offset).Limit(pageSize).Find(&users).Error; err != nil {
 		return domain.PaginatedUsers{}, err
 	}

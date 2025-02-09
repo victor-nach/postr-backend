@@ -9,9 +9,11 @@ import (
 	"syscall"
 	"time"
 
+	
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
-	"github.com/gin-gonic/gin"
 	"github.com/victor-nach/postr-backend/internal/config"
 	"github.com/victor-nach/postr-backend/internal/handlers"
 	"github.com/victor-nach/postr-backend/internal/infrastructure/db"
@@ -100,6 +102,8 @@ func RunServer(port string, userHandler *handlers.UserHandler, postHandler *hand
 func createRouter(userHandler *handlers.UserHandler, postHandler *handlers.PostHandler) http.Handler {
 	router := gin.Default()
 
+	router.Use(cors.Default())
+
 	router.POST("/users", userHandler.CreateUser)
 	router.GET("/users", userHandler.ListUsers)
 	router.GET("/users/count", userHandler.CountUsers)
@@ -107,7 +111,7 @@ func createRouter(userHandler *handlers.UserHandler, postHandler *handlers.PostH
 
 	router.POST("/posts", postHandler.CreatePost)
 	router.DELETE("/posts/:id", postHandler.DeletePost)
-	router.GET("/posts", postHandler.ListPostsByUserID)
+	router.GET("/posts/:userId", postHandler.ListPostsByUserID)
 
 	return router
 }

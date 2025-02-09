@@ -75,9 +75,9 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 }
 
 func (h *PostHandler) ListPostsByUserID(c *gin.Context) {
-	userId := c.Query("userId")
+	userId := c.Param("userId")
 	if userId == "" {
-		h.logger.Error("Missing userId query parameter")
+		h.logger.Error("Missing userId path parameter")
 		c.JSON(http.StatusBadRequest, domain.ErrInvalidInput)
 		return
 	}

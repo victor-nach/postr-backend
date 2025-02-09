@@ -6,24 +6,23 @@ This is a **Go-based** API that uses **SQLite** as the database. The project is 
 
 ## **Table of Contents**
 1. 
-1. [Project structure](#installation-and-setup)
+1. [Project structure](#project-structure)
 2. [Installation and Setup](#installation-and-setup)
 3. [Makefile Commands](#makefile-commands)
 4. [Database Migrations and Seeding](#database-migrations-and-seeding)
 5. [API Documentation](#api-documentation)
-   - Endpoints
-   - Errors
    - Entities
+   - Errors
+   - Endpoints
 
 ---
-## **Installation and Setup**
+## 1. **Project Structure**
 
+```
 POSTR-BACKEND
 ├── cmd
 │   ├── app
 │   │   └── main.go
-│   ├── generate_seeds
-
 │   └── migration_runner
 │       └── main.go
 ├── data
@@ -67,10 +66,35 @@ POSTR-BACKEND
 ├── go.sum
 ├── makefile
 └── README.md
+```
+
+- **cmd/**: Contains the entry points for the application.
+  - **app/**: Contains the main application (`main.go`).
+  - **migration_runner/**: Contains the migration runner (`main.go`).
+
+- **data/**: Contains database files, such as `app.db`.
+
+- **internal/**: Contains internal application logic and modules.
+  - **config/**: Configuration files and utilities.
+  - **domain/**: Domain logic including models, errors, and domain-specific functions.
+  - **handlers/**: HTTP handlers (e.g., for posts and users).
+  - **infrastructure/**: Infrastructure code such as database connections.
+  - **repositories/**: Code that interacts with the database.
+  - **services/**: Business logic divided into services for posts and users.
+
+- **migrations/**: SQL migration files for setting up and tearing down database schemas.
+
+- **pkg/**: External or reusable packages.
+  - **logger/**: Logging utilities.
+  - **migrator/**: Migration management utilities.
+
+- **seeds/**: JSON files containing seed data for posts and users.
+
+- Additional files like `.gitignore`, `go.mod`, `go.sum`, `makefile`, and `README.md` are included in the root directory.
 
 ---
 
-## **Installation and Setup**
+## 2. **Installation and Setup**
 
 ### Prerequisites:
 - **Go** (version 1.18+)
@@ -107,12 +131,7 @@ The following `Makefile` commands are available to simplify development and mana
 | `make migrate`   | Run the migrations (without seeding).       |
 | `make migrate-seed` | Run the migrations and seed the database. |
 | `make run`       | Start the application using `go run`.       |
-
-### Explanation:
-- **`make build-run`**: Builds the Go application and starts it from the `bin` directory.  
-- **`make migrate`**: Applies all pending migrations to the SQLite database without seeding data.  
-- **`make migrate-seed`**: Applies migrations and seeds the database with initial data (users and posts).  
-- **`make run`**: Starts the app in development mode using `go run`.
+| `make test`       | Run tests `go run`.                        |
 
 ---
 
@@ -138,62 +157,10 @@ You can run migrations and optionally seed the database manually:
 
 ## **API Documentation**
 
-### Endpoints
-#### `GET /users`
-**Description:** Retrieve all users.  
-**Response:**
-```json
-[
-  {
-    "id": "uuid",
-    "firstname": "John",
-    "lastname": "Doe",
-    "email": "john@example.com",
-    "street": "123 Elm Street",
-    "city": "New York",
-    "state": "NY",
-    "zipcode": "10001"
-  }
-]
-```
 
-#### `POST /users`
-**Description:** Create a new user.  
-**Request Body:**
-```json
-{
-  "firstname": "John",
-  "lastname": "Doe",
-  "email": "john@example.com",
-  "street": "123 Elm Street",
-  "city": "New York",
-  "state": "NY",
-  "zipcode": "10001"
-}
-```
+### **Entities**
 
-**Response:**
-```json
-{
-  "message": "User created successfully"
-}
-```
-
----
-
-### Errors
-
-| **Name**           | **Code** | **Message**              | **Description**                                      |
-|---------------------|----------|--------------------------|------------------------------------------------------|
-| `ValidationError`   | 400      | `Invalid request data.`  | The request body contains invalid or missing fields. |
-| `NotFoundError`     | 404      | `Resource not found.`    | The requested resource does not exist.               |
-| `InternalServerError` | 500    | `Something went wrong.`  | A server error occurred.                             |
-
----
-
-## **Entities**
-
-### User
+### **User**
 | **Field**   | **Type** | **Description**                       |
 |-------------|-----------|---------------------------------------|
 | `id`        | `string`  | Unique identifier for the user (UUID). |
@@ -217,8 +184,185 @@ You can run migrations and optionally seed the database manually:
 
 ---
 
-### Running Tests
-You can write tests and run them using:
-```sh
-make test
+### **Endpoints**
+
+### Users
+
+### Retrieve all users.  
+#### `GET /users?pageNumber=3&pageSize=2`
+**Request Query Parameters:**
+- `pageNumber` (optional)
+- `pageSize` (optional)
+
+**Response:**
+```json
+{
+    "status": "success",
+    "message": "Users listed successfully",
+    "pagination": {
+        "current_page": 3,
+        "total_pages": 25,
+        "total_size": 50
+    },
+    "data": [
+        {
+            "id": "12296bff-6b03-42f1-a934-cf1995413d8c",
+            "firstname": "Michael",
+            "lastname": "Johnson",
+            "email": "Michael.Johnson.6@acme.corp",
+            "street": "15 Pine Ln.",
+            "city": "Chicago",
+            "state": "IL",
+            "zipcode": "60007",
+            "createdAt": "2025-02-09T23:28:04.3599836+01:00"
+        },
+        {
+            "id": "70fbdfcd-a513-4e92-9e0d-9c74dac01a72",
+            "firstname": "Emily",
+            "lastname": "Williams",
+            "email": "Emily.Williams.7@acme.corp",
+            "street": "20 Maple Dr.",
+            "city": "Houston",
+            "state": "TX",
+            "zipcode": "77001",
+            "createdAt": "2025-02-09T23:28:04.3599836+01:00"
+        }
+    ]
+}
 ```
+
+### Retrieve user by ID.
+#### `GET /users/:userId`
+**Request Path Variables:**
+- `userId` (required)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "User retrieved successfully",
+  "data": {
+    "id": "963de191-8278-40f0-a367-e2e45e724aad",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john@example.com",
+    "street": "123 Elm Street",
+    "city": "New York",
+    "state": "NY",
+    "zipcode": "10001",
+    "createdAt": "2025-02-09T17:15:06.6062919+01:00"
+  }
+}
+```
+
+### Retrieve the total count of users.
+#### `GET /users/count`
+**Request Path Variables:**
+- `userId` (required)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "User retrieved successfully",
+  "data": {
+    "id": "963de191-8278-40f0-a367-e2e45e724aad",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john@example.com",
+    "street": "123 Elm Street",
+    "city": "New York",
+    "state": "NY",
+    "zipcode": "10001",
+    "createdAt": "2025-02-09T17:15:06.6062919+01:00"
+  }
+}
+```
+
+### Posts
+
+### Create a new post.
+#### `POST /posts`
+**Request Body:**
+```json
+{
+  "userId": "963de191-8278-40f0-a367-e2e45e724aad", // required
+  "title": "the title", // required
+  "body": "a random body" // required
+}
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "Post created successfully",
+  "data": {
+    "id": "438c550c-33b8-4fd4-9a27-631c720f3d43",
+    "userId": "963de191-8278-40f0-a367-e2e45e724aad",
+    "title": "the title",
+    "body": "a random body",
+    "createdAt": "2025-02-09T22:26:24.0343903+01:00"
+  }
+}
+```
+
+### Retrieve all posts for a specific user.
+#### `GET /posts?userId=18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e2`
+**Request Query Parameters:**
+- `userId` (required)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "Posts listed successfully",
+  "data": [
+    {
+      "id": "4f83e4ad-8325-4f20-a87b-50c74a294ecf",
+      "userId": "18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1",
+      "title": "Post 3",
+      "body": "Content of post 3",
+      "createdAt": "2025-02-09T17:15:06.6162837+01:00"
+    }
+  ]
+}
+```
+
+### Delete a post by ID.
+#### `DELETE /posts/:id`
+**Request path Parameters:**
+- `id` (required)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "message": "Post deleted successfully"
+}
+```
+
+---
+
+### Errors
+
+**General Error Response:**
+```json
+{
+  "status": "success",
+  "message": "Post deleted successfully"
+}
+```
+
+
+### **API Error Codes**
+
+| **Name**            | **Code**   | **Message**                                | **Description**                                    |
+|----------------------|------------|--------------------------------------------|----------------------------------------------------|
+| `ErrInternalServer`  | `APP-500`  | `Internal server error - Unable to handle request` | A server error occurred while processing the request. |
+| `ErrInvalidInput`    | `APP-400`  | `Invalid input data`                       | The request body contains invalid or missing fields. |
+| `ErrUserNotFound`    | `USR-404001` | `User not found`                          | The specified user could not be found.             |
+| `ErrPostNotFound`    | `PST-404001` | `Post not found`                          | The specified post could not be found.             |
+| `ErrCreateUser`      | `USR-400101` | `Failed to create user`                   | An error occurred while trying to create a user.   |
+
+---
