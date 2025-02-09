@@ -4,7 +4,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// NewLogger creates a new zap.Logger instance based on the provided environment.
+// NewLogger creates a new zap.Logger instance
 func NewLogger(appEnv string) (*zap.Logger, error) {
 	var logger *zap.Logger
 	var err error

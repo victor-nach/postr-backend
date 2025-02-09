@@ -1,0 +1,620 @@
+{
+	"info": {
+		"_postman_id": "1521d73b-531a-4434-8e65-f51b9957472d",
+		"name": "Postr Backend",
+		"description": "API for postr application  \n  \nManage user and user's posts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6414812"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}/users",
+							"host": [
+								"{{Base_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 20:49:53 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "599"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Users listed successfully\",\n    \"pagination\": {\n        \"current_page\": 0,\n        \"total_pages\": 1,\n        \"total_size\": 2\n    },\n    \"data\": [\n        {\n            \"id\": \"963de191-8278-40f0-a367-e2e45e724aad\",\n            \"firstname\": \"John\",\n            \"lastname\": \"Doe\",\n            \"email\": \"john@example.com\",\n            \"street\": \"123 Elm Street\",\n            \"city\": \"New York\",\n            \"state\": \"NY\",\n            \"zipcode\": \"10001\",\n            \"createdAt\": \"2025-02-09T17:15:06.6062919+01:00\"\n        },\n        {\n            \"id\": \"18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1\",\n            \"firstname\": \"Jane\",\n            \"lastname\": \"Smith\",\n            \"email\": \"jane@example.com\",\n            \"street\": \"456 Oak Avenue\",\n            \"city\": \"Los Angeles\",\n            \"state\": \"CA\",\n            \"zipcode\": \"90001\",\n            \"createdAt\": \"2025-02-09T17:15:06.6062919+01:00\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}/users/:userId",
+							"host": [
+								"{{Base_URL}}"
+							],
+							"path": [
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "c9fa15fa-4093-4cf7-8ecf-365b6743930a",
+									"description": "required"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "NOK - not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users/:userId",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "963de191-8278-40f0-a367-e2e45e724aar",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:36:32 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"code\": \"USR-404001\",\n    \"message\": \"User not found\"\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users/:userId",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "963de191-8278-40f0-a367-e2e45e724aad",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:30:57 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "299"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": \"963de191-8278-40f0-a367-e2e45e724aad\",\n        \"firstname\": \"John\",\n        \"lastname\": \"Doe\",\n        \"email\": \"john@example.com\",\n        \"street\": \"123 Elm Street\",\n        \"city\": \"New York\",\n        \"state\": \"NY\",\n        \"zipcode\": \"10001\",\n        \"createdAt\": \"2025-02-09T17:15:06.6062919+01:00\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}/users/count",
+							"host": [
+								"{{Base_URL}}"
+							],
+							"path": [
+								"users",
+								"count"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users/count",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users",
+										"count"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:14:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "149"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Users count retrieved successfully\",\n    \"pagination\": {\n        \"current_page\": 0,\n        \"total_pages\": 0,\n        \"total_size\": 0\n    },\n    \"data\": {\n        \"count\": 2\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"963de191-8278-40f0-a367-e2e45e724aad\",\r\n    \"title\": \"the title\",\r\n    \"body\": \"a random body\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/posts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "NOK - user not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": \"asdsa\",\r\n    \"title\": \"the title\",\r\n    \"body\": \"a random body\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:25:23 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"code\": \"USR-404001\",\n    \"message\": \"User not found\"\n}"
+						},
+						{
+							"name": "NOK - missing fields",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:25:38 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "160"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"code\": \"APP-400\",\n    \"message\": \"Invalid input data\",\n    \"fieldErrors\": {\n        \"body\": \"cannot be blank\",\n        \"title\": \"cannot be blank\",\n        \"userId\": \"cannot be blank\"\n    }\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": \"963de191-8278-40f0-a367-e2e45e724aad\",\r\n    \"title\": \"the title\",\r\n    \"body\": \"a random body\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:26:24 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "250"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Posts listed successfully\",\n    \"data\": {\n        \"id\": \"438c550c-33b8-4fd4-9a27-631c720f3d43\",\n        \"userId\": \"963de191-8278-40f0-a367-e2e45e724aad\",\n        \"title\": \"the title\",\n        \"body\": \"a random body\",\n        \"createdAt\": \"2025-02-09T22:26:24.0343903+01:00\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "List by userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}/posts?userId=18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e2",
+							"host": [
+								"{{Base_URL}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/posts?userId=18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:16:11 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "253"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Posts listed successfully\",\n    \"data\": [\n        {\n            \"id\": \"4f83e4ad-8325-4f20-a87b-50c74a294ecf\",\n            \"userId\": \"18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e1\",\n            \"title\": \"Post 3\",\n            \"body\": \"Content of post 3\",\n            \"createdAt\": \"2025-02-09T17:15:06.6162837+01:00\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "NOK - user not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/posts?userId=18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "18de9b2e-7ebc-4624-9bb6-4c1ba4ea11e2"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:27:33 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"code\": \"USR-404001\",\n    \"message\": \"User not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}/posts/:id",
+							"host": [
+								"{{Base_URL}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8df068ff-9968-46de-bc71-01b230a8dff9"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/posts/:id",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"posts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "438c550c-33b8-4fd4-9a27-631c720f3d43"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 09 Feb 2025 21:27:16 GMT"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Base_URL",
+			"value": "https://postr-backend-n9s0.onrender.com",
+			"type": "string"
+		}
+	]
+}

@@ -19,3 +19,8 @@ migrate-seed:
 run:
 	@echo "Starting the app locally using go run..."
 	go run ./cmd/app/main.go
+
+# run tests
+test:
+	@echo "Starting the app locally using go run..."
+	go test ./...

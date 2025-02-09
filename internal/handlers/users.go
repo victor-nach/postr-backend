@@ -77,7 +77,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 func (h *UserHandler) ListUsers(c *gin.Context) {
 	pageNumber, err := strconv.Atoi(c.Query("pageNumber"))
 	if err != nil {
-		pageNumber = 0 // default
+		pageNumber = 1 // default
 	}
 	pageSize, err := strconv.Atoi(c.Query("pageSize"))
 	if err != nil {
