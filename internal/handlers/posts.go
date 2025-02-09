@@ -9,22 +9,19 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 
 	"github.com/victor-nach/postr-backend/internal/domain"
 )
 
 type PostHandler struct {
-	repo     domain.PostRepository
-	userRepo domain.UserRepository
-	logger   *zap.Logger
+	service domain.PostService
+	logger  *zap.Logger
 }
 
-func NewPostHandler(repo domain.PostRepository, userRepo domain.UserRepository, logger *zap.Logger) *PostHandler {
+func NewPostHandler(service domain.PostService, logger *zap.Logger) *PostHandler {
 	return &PostHandler{
-		repo:   repo,
-		userRepo: userRepo,
-		logger: logger,
+		service: service,
+		logger:  logger,
 	}
 }
 
@@ -36,6 +33,7 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 		return
 	}
 
+	// Validate request body
 	if err := req.Validate(); err != nil {
 		if verrs, ok := err.(validation.Errors); ok {
 			h.logger.Error("Validation errors", zap.Any("errors", verrs))
@@ -48,12 +46,6 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 		return
 	}
 
-	if err := h.userRepo.Validate(req.UserID); err != nil {
-		h.logger.Error("Invalid userID", zap.Error(err))
-		c.JSON(http.StatusBadRequest, domain.ErrUserNotFound)
-		return
-	}
-
 	post := &domain.Post{
 		ID:        uuid.NewString(),
 		UserID:    req.UserID,
@@ -62,15 +54,24 @@ func (h *PostHandler) CreatePost(c *gin.Context) {
 		CreatedAt: time.Now(),
 	}
 
-	if err := h.repo.Create(post); err != nil {
-		h.logger.Error("Error creating post", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, domain.ErrInternalServer)
+	if err := h.service.Create(c.Request.Context(), post); err != nil {
+		if errors.Is(err, domain.ErrUserNotFound) {
+			c.JSON(http.StatusNotFound, err)
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
 	h.logger.Info("Post created successfully", zap.Any("post", post))
-	c.JSON(http.StatusCreated, post)
-	h.logger.Info("CreatePost handler completed")
+
+	resp := APIResponse{
+		Status:  successStatus,
+		Message: "Posts listed successfully",
+		Data:    post,
+	}
+	c.JSON(http.StatusOK, resp)
 }
 
 func (h *PostHandler) ListPostsByUserID(c *gin.Context) {
@@ -81,33 +82,36 @@ func (h *PostHandler) ListPostsByUserID(c *gin.Context) {
 		return
 	}
 
-	if err := h.userRepo.Validate(userId); err != nil {
-		h.logger.Error("Invalid userID", zap.Error(err))
-		c.JSON(http.StatusBadRequest, domain.ErrUserNotFound)
-		return
-	}
-
-	posts, err := h.repo.ListByUserID(userId)
+	posts, err := h.service.List(c.Request.Context(), userId)
 	if err != nil {
-		h.logger.Error("Error listing posts", zap.Error(err))
+		if errors.Is(err, domain.ErrUserNotFound) {
+			c.JSON(http.StatusNotFound, err)
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, domain.ErrInternalServer)
 		return
 	}
 
 	h.logger.Info("Posts listed successfully", zap.String("userId", userId), zap.Int("count", len(posts)))
-	c.JSON(http.StatusOK, posts)
+
+	resp := APIResponse{
+		Status:  successStatus,
+		Message: "Posts listed successfully",
+		Data:    posts,
+	}
+	c.JSON(http.StatusOK, resp)
 }
 
 func (h *PostHandler) DeletePost(c *gin.Context) {
 	id := c.Param("id")
-	if err := h.repo.Delete(id); err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			h.logger.Info("Post not found", zap.String("id", id))
-			c.JSON(http.StatusNotFound, domain.ErrUserNotFound)
+	if err := h.service.Delete(c.Request.Context(), id); err != nil {
+		if errors.Is(err, domain.ErrPostNotFound) {
+			c.JSON(http.StatusNotFound, err)
 			return
 		}
-		h.logger.Error("Error deleting post", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, domain.ErrInternalServer)
+
+		c.JSON(http.StatusInternalServerError, err)
 		return
 
 	}

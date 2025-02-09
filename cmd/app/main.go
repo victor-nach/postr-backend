@@ -16,6 +16,8 @@ import (
 	"github.com/victor-nach/postr-backend/internal/handlers"
 	"github.com/victor-nach/postr-backend/internal/infrastructure/db"
 	"github.com/victor-nach/postr-backend/internal/infrastructure/repositories"
+	"github.com/victor-nach/postr-backend/internal/services/postsservice"
+	"github.com/victor-nach/postr-backend/internal/services/usersservice"
 	"github.com/victor-nach/postr-backend/pkg/logger"
 )
 
@@ -48,9 +50,13 @@ func main() {
 	userRepo := repositories.NewUserRepository(gormDB)
 	postRepo := repositories.NewPostRepository(gormDB)
 
+	// Initialize services
+	userSvc := usersservice.New(userRepo, logr)
+	postSvc := postsservice.New(postRepo, userRepo, logr)
+
 	// Initialize handlers
-	userHandler := handlers.NewUserHandler(userRepo, logr)
-	postHandler := handlers.NewPostHandler(postRepo, userRepo, logr)
+	userHandler := handlers.NewUserHandler(userSvc, logr)
+	postHandler := handlers.NewPostHandler(postSvc,  logr)
 
 	RunServer(cfg.Port, userHandler, postHandler, logr)
 }
