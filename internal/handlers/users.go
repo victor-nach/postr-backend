@@ -20,6 +20,8 @@ type UserHandler struct {
 }
 
 func NewUserHandler(service domain.UserService, logger *zap.Logger) *UserHandler {
+	logger = logger.With(zap.String("package", "handlers"))
+
 	return &UserHandler{
 		service: service,
 		logger:  logger,
@@ -27,9 +29,11 @@ func NewUserHandler(service domain.UserService, logger *zap.Logger) *UserHandler
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {
+	logr := h.logger.With(zap.String("method", "CreateUser"))
+
 	var req createUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		h.logger.Error("Error binding JSON", zap.Error(err))
+		logr.Error("Error binding JSON", zap.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
 	}
@@ -37,12 +41,12 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	// Validate request body
 	if err := req.Validate(); err != nil {
 		if verrs, ok := err.(validation.Errors); ok {
-			h.logger.Error("Validation errors", zap.Any("errors", verrs))
+			logr.Error("Validation errors", zap.Any("errors", verrs))
 			c.JSON(http.StatusBadRequest, domain.ErrInvalidInput.WithFieldErrors(verrs))
 			return
 		}
 
-		h.logger.Error("Validation error", zap.Error(err))
+		logr.Error("Validation error", zap.Error(err))
 		c.JSON(http.StatusBadRequest, domain.ErrInvalidInput)
 		return
 	}
@@ -64,7 +68,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info("User created successfully", zap.Any("user", user))
+	logr.Info("User created successfully", zap.Any("user", user))
 
 	resp := APIResponse{
 		Status:  successStatus,
@@ -75,6 +79,8 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 }
 
 func (h *UserHandler) ListUsers(c *gin.Context) {
+	logr := h.logger.With(zap.String("method", "ListUsers"))
+
 	pageNumber, err := strconv.Atoi(c.Query("pageNumber"))
 	if err != nil {
 		pageNumber = 1 // default
@@ -90,7 +96,7 @@ func (h *UserHandler) ListUsers(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info("Users listed successfully", zap.Any("paginated", paginatedUsers))
+	logr.Info("Users listed successfully", zap.Any("paginated", paginatedUsers))
 
 	resp := APIResponse{
 		Status:     successStatus,
@@ -102,6 +108,8 @@ func (h *UserHandler) ListUsers(c *gin.Context) {
 }
 
 func (h *UserHandler) GetUserByID(c *gin.Context) {
+	logr := h.logger.With(zap.String("method", "GetUserByID"))
+
 	id := c.Param("id")
 	user, err := h.service.Get(c.Request.Context(), id)
 
@@ -115,7 +123,7 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 		return
 	}
 
-	h.logger.Info("User retrieved successfully", zap.Any("user", user))
+	logr.Info("User retrieved successfully", zap.Any("user", user))
 
 	resp := APIResponse{
 		Status:  successStatus,
@@ -126,13 +134,15 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 }
 
 func (h *UserHandler) CountUsers(c *gin.Context) {
+	logr := h.logger.With(zap.String("method", "CountUsers"))
+
 	count, err := h.service.Count(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
 
-	h.logger.Info("Users count retrieved successfully", zap.Int("count", count))
+	logr.Info("Users count retrieved successfully", zap.Int("count", count))
 
 	resp := APIResponse{
 		Status:  successStatus,

@@ -58,6 +58,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang-migrate/migrate/v4 v4.18.2
+	go.uber.org/mock v0.5.0
 	go.uber.org/multierr v1.10.0 // indirect
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12

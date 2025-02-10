@@ -22,7 +22,8 @@ import (
 var (
 	db      *gorm.DB
 	sqlDB   *sql.DB
-	repo    *postRepository
+	postsrepo    *postRepository
+	usersrepo    *userRepository
 	testCtx = context.Background()
 )
 
@@ -44,7 +45,8 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 
-	repo = NewPostRepository(db)
+	postsrepo = NewPostRepository(db)
+	usersrepo = NewUserRepository(db)
 
 	// Run the tests
 	code := m.Run()
@@ -62,7 +64,7 @@ func TestPostRepository_Create(t *testing.T) {
 		CreatedAt: time.Now(),
 	}
 
-	err := repo.Create(testCtx, &post)
+	err := postsrepo.Create(testCtx, &post)
 	require.NoError(t, err)
 
 	// Verify post creation
@@ -81,7 +83,7 @@ func TestPostRepository_ListByUserID(t *testing.T) {
 	require.NoError(t, db.WithContext(testCtx).Create(&posts).Error)
 
 	// List posts for the user
-	result, err := repo.ListByUserID(testCtx, posts[0].UserID)
+	result, err := postsrepo.ListByUserID(testCtx, posts[0].UserID)
 	require.NoError(t, err)
 	require.Len(t, result, 1)
 	assert.Equal(t, "Post 1", result[0].Title)
@@ -98,7 +100,7 @@ func TestPostRepository_Delete(t *testing.T) {
 	require.NoError(t, db.WithContext(testCtx).Create(&post).Error)
 
 	// Delete the post
-	err := repo.Delete(testCtx, post.ID)
+	err := postsrepo.Delete(testCtx, post.ID)
 	require.NoError(t, err)
 
 	// Verify the post no longer exists

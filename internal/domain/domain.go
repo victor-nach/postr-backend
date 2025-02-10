@@ -1,7 +1,10 @@
 package domain
 
-import "context"
+import (
+	"context"
+)
 
+//go:generate mockgen -destination=./mocks/mock.go -package=mocks github.com/victor-nach/postr-backend/internal/domain UserService
 type UserService interface {
 	Create(ctx context.Context, user *User) error
 	Get(ctx context.Context, id string) (*User, error)
@@ -9,6 +12,7 @@ type UserService interface {
 	Count(ctx context.Context) (int, error)
 }
 
+//go:generate mockgen -destination=./mocks/mock.go -package=mocks github.com/victor-nach/postr-backend/internal/domain PostService
 type PostService interface {
 	Create(ctx context.Context, post *Post) error
 	List(ctx context.Context, userId string) ([]Post, error)
