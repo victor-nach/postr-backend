@@ -131,7 +131,7 @@ POSTR-BACKEND
 2. Install dependencies:
 
    ```sh
-   go mod tidy
+   go mod download
    ```
 
 3. Build and run the application:

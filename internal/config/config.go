@@ -27,7 +27,10 @@ type Config struct {
 // Sets default values if applicable
 func Load(logger *zap.Logger) (*Config, error) {
 	// Load environment variables from .env if available.
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		logger.Warn("no .env file available, using default values")
+	}
 
 	port, ok := os.LookupEnv(EnvPort)
 	if !ok {
